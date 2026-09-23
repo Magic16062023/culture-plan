@@ -338,42 +338,187 @@
       .server-status, .user-badge { width: 100%; border: 0; justify-content: flex-end; }
       .management-grid { grid-template-columns: 1fr; }
     }
+
+    /* Editorial event guide: clean navigation, generous imagery and a restrained red accent. */
+    :root {
+      --ink: #1f1d1c;
+      --muted: #75706e;
+      --paper: #f8f7f5;
+      --surface: #fff;
+      --line: #e8e5e2;
+      --green: #b13238;
+      --green-soft: #f9eded;
+      --coral: #b13238;
+      --gold: #c4935b;
+      --shadow: 0 12px 38px rgba(30, 22, 20, .045);
+      --radius: 6px;
+    }
+    body { background: var(--paper); }
+    .shell { width: min(1320px, calc(100% - 64px)); }
+    .site-header { background: white; border-bottom: 1px solid var(--line); }
+    .topbar { min-height: 82px; padding: 14px 0; border: 0; }
+    .brand-mark { width: 46px; height: 46px; border-radius: 4px; background: var(--green); font-size: 29px; }
+    .brand strong { font-family: Georgia, serif; font-size: 21px; font-weight: 700; letter-spacing: -.045em; }
+    .brand span { margin-top: 3px; font-size: 11px; }
+    .top-actions { align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .top-actions .button { min-height: 37px; padding-inline: 12px; font-size: 11px; }
+    .site-nav { display: flex; align-items: center; gap: 32px; min-height: 45px; border-top: 1px solid var(--line); }
+    .site-nav a { display: inline-flex; align-items: center; height: 45px; border-bottom: 2px solid transparent; color: var(--ink); font-size: 12px; font-weight: 800; text-decoration: none; }
+    .site-nav a:hover, .site-nav a:focus-visible, .site-nav a.active { border-bottom-color: var(--green); color: var(--green); }
+    .button { border-radius: 4px; text-decoration: none; }
+    .button:hover { box-shadow: none; background: #91272c; }
+    .button.secondary { color: var(--ink); border-color: var(--line); background: white; }
+    .button.secondary:hover { color: var(--green); border-color: var(--green); }
+    .button.ghost { background: #f2f0ee; }
+    .hero { position: relative; isolation: isolate; min-height: 320px; margin-top: 28px; padding: 47px 48px; align-items: center; overflow: hidden; color: white; background: #671e27; }
+    .hero::before { position: absolute; z-index: -1; inset: 0; content: ''; background: radial-gradient(ellipse at 80% 15%, #bb4e52 0%, transparent 39%), linear-gradient(117deg,#501a23 2%,#812b33 59%,#411b24 100%); }
+    .hero::after { position: absolute; z-index: -1; right: 8%; top: -83px; width: 380px; height: 380px; border: 1px solid #ffffff30; border-radius: 50%; box-shadow: 0 0 0 54px #ffffff0c, 0 0 0 108px #ffffff09; content: ''; }
+    .hero .eyebrow { color: #ffddd8; }
+    h1 { max-width: 710px; font-family: Georgia, serif; font-size: clamp(42px, 5.2vw, 72px); letter-spacing: -.045em; }
+    .hero-note { max-width: 280px; margin: 0; color: #fff9; font-size: 13px; line-height: 1.7; }
+    .stats { margin: 24px 0 38px; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .stat { padding: 18px 23px; border: 0; border-radius: 0; background: white; }
+    .stat-value { font-family: Georgia,serif; font-size: 32px; color: var(--ink); }
+    .stat-label { font-size: 11px; }
+    .workspace { grid-template-columns: 320px minmax(0,1fr); gap: 32px; }
+    .panel { border: 1px solid var(--line); box-shadow: none; }
+    .sidebar-head { background: #302b2b; }
+    .main-panel { padding: 28px; }
+    .toolbar { padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .month-control h2, .sidebar-head h2, .modal-head h2 { font-family: Georgia,serif; }
+    .view-tabs { background: #f5f3f1; border-radius: 4px; }
+    .tab, .tab.active { border-radius: 3px; }
+    .tab.active { color: var(--green); }
+    .icon-button { border-radius: 4px; }
+    input, select, textarea { border-radius: 4px; }
+    .filter-row { grid-template-columns: minmax(0,1fr) 190px; gap: 10px; margin-bottom: 25px; }
+    .afisha-filters { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .filter-search { grid-column: 1 / -1; display: flex; gap: 10px; }
+    .filter-search input { min-width: 0; }
+    .filter-search .button { flex-shrink: 0; }
+    .afisha-filters select { min-width: 0; }
+    .pushkin-badge { display: inline-block; margin-top: 9px; padding: 4px 7px; color: #773b20; background: #faf0dc; font-size: 10px; font-weight: 800; }
+    .event-list { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px 18px; }
+    .list-card { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0 0 15px; overflow: hidden; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: white; }
+    .list-image { position: relative; width: 100%; aspect-ratio: 1.5; overflow: hidden; background: #eee8e4; }
+    .list-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+    .list-card:hover .list-image img { transform: scale(1.04); }
+    .list-image.no-poster { display: grid; place-items: center; color: #8b4c4c; background: linear-gradient(145deg,#f0dfdd,#e9d1d0); font-family: Georgia,serif; font-size: 38px; }
+    .list-card .date-tile { position: absolute; top: 12px; left: 12px; min-width: 54px; padding: 8px 6px; border-radius: 3px; color: var(--ink); background: white; box-shadow: 0 2px 12px #0002; }
+    .date-tile strong { font-family: Georgia,serif; font-size: 24px; }
+    .date-tile span { font-size: 10px; }
+    .list-info { flex: 1; padding: 15px 16px 10px; }
+    .list-category { display: block; margin-bottom: 9px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+    .list-info h3 { margin: 0 0 10px; overflow: visible; font-family: Georgia,serif; font-size: 20px; font-weight: 700; line-height: 1.25; text-overflow: clip; white-space: normal; }
+    .list-meta { line-height: 1.55; }
+    .list-card .button { align-self: flex-start; min-height: 32px; margin: 0 16px; padding: 0; border: 0; color: var(--green); font-size: 12px; background: none; }
+    .list-card .button::after { content: ' →'; }
+    .event-chip { border-left-color: var(--green); }
+    .auth-screen { overflow-y: auto; background: #f7f5f3; }
+    .auth-screen { background: #1f1d1c99; }
+    .auth-close { position: absolute; top: 12px; right: 12px; z-index: 1; width: 34px; height: 34px; border: 0; color: white; background: #ffffff33; font-size: 23px; }
+    .auth-card { position: relative; }
+    .auth-card { border-radius: 5px; box-shadow: 0 24px 70px #37232617; }
+    .auth-art { position: relative; overflow: hidden; background: #772630; }
+    .auth-art::after { position: absolute; right: -45px; top: -60px; width: 210px; height: 210px; border: 1px solid #ffffff3a; border-radius: 50%; box-shadow: 0 0 0 33px #ffffff0b; content: ''; pointer-events: none; }
+    .auth-art h2 { font-family: Georgia,serif; }
+    .auth-tabs, .auth-tab, .auth-tab.active { border-radius: 3px; }
+    .vk-login { background: #07f; }
+    .modal-head { background: #302b2b; }
+    .places-section { padding: 42px 0 65px; }
+    .places-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+    .places-heading h1 { margin: 5px 0 12px; font-size: clamp(38px, 4vw, 58px); }
+    .places-heading p { max-width: 700px; margin: 0; color: var(--muted); line-height: 1.6; }
+    .places-count { flex-shrink: 0; color: var(--green); font-size: 13px; font-weight: 800; }
+    .places-filters { display: grid; grid-template-columns: minmax(0,2fr) repeat(2,minmax(0,1fr)); gap: 12px; margin: 28px 0; }
+    .places-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
+    .place-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); background: white; }
+    .place-photo { position: relative; display: grid; place-items: center; aspect-ratio: 1.55; overflow: hidden; color: #793c3c; background: #ede6e2; }
+    .place-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .place-photo-fallback { padding: 18px; text-align: center; }
+    .place-content { display: flex; flex: 1; flex-direction: column; padding: 20px; }
+    .place-content h2 { margin: 0 0 9px; font-family: Georgia,serif; font-size: 21px; line-height: 1.28; }
+    .place-content p { margin: 0 0 14px; color: var(--muted); line-height: 1.55; }
+    .place-content .place-address { margin-top: auto; color: var(--ink); font-size: 13px; }
+    .place-open { align-self: flex-start; padding: 8px 0 0; border: 0; color: var(--green); background: none; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+    .place-open:hover { text-decoration: underline; }
+    .place-detail { width: min(700px,calc(100% - 32px)); }
+    .place-detail .place-photo { aspect-ratio: 2; }
+    .place-detail .modal-body { line-height: 1.6; }
+    .place-detail .modal-body p { margin: 12px 0; }
+    .place-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; }
+    .place-links a { color: var(--green); font-weight: 800; }
+    .place-credit { color: var(--muted); font-size: 12px; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+    @media (max-width: 1000px) { .places-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+    @media (max-width: 1160px) { .event-list { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+    @media (max-width: 1000px) { .workspace { grid-template-columns: 1fr; } .hero { grid-template-columns: 1fr; } .hero-note { max-width: 530px; } .sidebar { position: static; } }
+    @media (max-width: 700px) {
+      .shell { width: calc(100% - 28px); }
+      .topbar { display: grid; align-items: center; gap: 10px; }
+      .top-actions { justify-content: flex-start; gap: 5px; }
+      .server-status, .user-badge { width: auto; justify-content: flex-start; }
+      .brand strong { font-size: 17px; }
+      .site-nav { gap: 20px; overflow-x: auto; white-space: nowrap; }
+      .hero { min-height: 290px; margin-top: 14px; padding: 32px 24px; }
+      h1 { font-size: clamp(38px,9vw,54px); }
+      .hero-note { font-size: 12px; }
+      .stats { margin-bottom: 22px; }
+      .stat { padding: 12px 8px; }
+      .stat-value { font-size: 24px; }
+      .workspace { gap: 16px; }
+      .event-list { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px 10px; }
+      .list-info { padding: 11px 9px 8px; }
+      .list-info h3 { font-size: 16px; }
+      .list-category { font-size: 9px; }
+      .list-card .button { grid-column: auto; margin: 0 9px; }
+      .afisha-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .places-heading { display: block; }
+      .places-count { display: block; margin-top: 16px; }
+      .places-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .places-filters input { grid-column: 1 / -1; }
+      .places-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) { .event-list { grid-template-columns: 1fr; } .top-actions .button { font-size: 10px; } .afisha-filters { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <header class="shell topbar">
+  <header class="site-header"><div class="shell topbar">
     <div class="brand">
       <div class="brand-mark">К</div>
       <div><strong>Культурный план</strong><span>Единый календарь учреждений культуры</span></div>
     </div>
     <div class="top-actions">
-      <span class="server-status" id="serverStatus">Проверка почты</span>
+      <span class="server-status" id="serverStatus">Загрузка афиши</span>
       <span class="user-badge" id="userBadge" hidden></span>
+      <a class="button secondary" href="/culture-plan-android-fixed.apk" download="culture-plan-android-fixed.apk">Скачать APK</a>
       <button class="button secondary" id="usersButton" type="button" hidden>Пользователи</button>
       <button class="button secondary" id="calendarFeedButton" type="button" hidden>Яндекс Календарь</button>
-      <button class="button secondary" id="exportButton" type="button">Выгрузить Excel</button>
-      <button class="button" id="addButton" type="button">+ Добавить событие</button>
+      <button class="button secondary" id="exportButton" type="button" hidden>Выгрузить Excel</button>
+      <button class="button" id="addButton" type="button" hidden>+ Добавить событие</button>
+      <button class="button secondary" id="loginButton" type="button">Войти</button>
+      <button class="button" id="registerButton" type="button">Регистрация</button>
       <button class="button ghost" id="logoutButton" type="button" hidden>Выйти</button>
     </div>
-  </header>
+  </div><nav class="shell site-nav" aria-label="Разделы проекта"><a href="#events" id="navEvents">Афиша</a><a href="#places" id="navPlaces">Места</a><a href="#calendarView" id="navCalendar" hidden>Календарь</a><a href="#eventFormPanel" id="navForm" hidden>Добавить событие</a></nav></header>
 
   <main class="shell">
     <section class="hero">
       <div>
-        <p class="eyebrow">Планирование культурной жизни</p>
-        <h1>События города<br>в едином ритме</h1>
+        <p class="eyebrow">Культурная афиша · ЛНР</p>
+        <h1>Искусство ближе,<br>чем кажется</h1>
       </div>
-      <p class="hero-note">Добавляйте концерты, выставки, спектакли и встречи. Календарь поможет учреждениям видеть общую программу и избегать пересечений.</p>
+      <p class="hero-note">Театр, музыка, выставки и встречи — выбирайте событие и планируйте свой культурный день.</p>
     </section>
 
-    <section class="stats" aria-label="Сводка мероприятий">
+    <section class="stats" id="eventStats" aria-label="Сводка мероприятий" hidden>
       <div class="stat"><strong class="stat-value" id="totalCount">0</strong><span class="stat-label">всего мероприятий</span></div>
       <div class="stat"><strong class="stat-value" id="monthCount">0</strong><span class="stat-label">в этом месяце</span></div>
       <div class="stat"><strong class="stat-value" id="institutionCount">0</strong><span class="stat-label">учреждений</span></div>
     </section>
 
     <section class="workspace">
-      <aside class="panel sidebar" id="eventFormPanel">
+      <aside class="panel sidebar" id="eventFormPanel" hidden>
         <div class="sidebar-head">
           <h2 id="formTitle">Новое мероприятие</h2>
           <p>Заполните карточку события. Поля со звёздочкой обязательны.</p>
@@ -401,6 +546,11 @@
           <div class="field wide">
             <label class="required" for="place">Место проведения</label>
             <input id="place" maxlength="150" placeholder="Площадка или адрес" required>
+          </div>
+          <div class="field wide">
+            <label for="city">Город</label>
+            <input id="city" maxlength="100" placeholder="Например, Луганск">
+            <p class="field-hint">Если город указан в адресе, он появится в фильтрах автоматически.</p>
           </div>
           <div class="field wide">
             <label for="direction">Направление</label>
@@ -439,6 +589,7 @@
             <input id="ticketUrl" type="url" maxlength="500" placeholder="https://tickets.example.ru/event">
             <p class="field-hint">Укажите полную ссылку, начинающуюся с https://</p>
           </div>
+          <label class="wide"><input id="pushkinCard" type="checkbox" style="width:auto;height:auto"> Доступно по Пушкинской карте</label>
           <div class="form-actions">
             <button class="button" type="submit" id="submitButton">Добавить в календарь</button>
             <button class="button ghost" type="button" id="cancelEdit">Отмена</button>
@@ -446,34 +597,54 @@
         </form>
       </aside>
 
-      <section class="panel main-panel">
+      <section class="panel main-panel" id="events">
         <div class="toolbar">
-          <div class="month-control">
+          <div class="month-control" id="monthControl" hidden>
             <button class="icon-button" id="prevMonth" type="button" aria-label="Предыдущий месяц">‹</button>
             <h2 id="monthLabel"></h2>
             <button class="icon-button" id="nextMonth" type="button" aria-label="Следующий месяц">›</button>
           </div>
           <div class="view-tabs" role="tablist">
-            <button class="tab active" data-view="calendar" type="button">Календарь</button>
-            <button class="tab" data-view="list" type="button">Список</button>
+            <button class="tab" data-view="calendar" type="button" hidden>Календарь</button>
+            <button class="tab active" data-view="list" type="button">Афиша</button>
           </div>
         </div>
 
-        <div class="calendar-view" id="calendarView">
+        <div class="calendar-view hidden" id="calendarView">
           <div class="weekdays" aria-hidden="true"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
           <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
-        <div class="list-view" id="listView">
-          <div class="filter-row">
-            <input id="search" type="search" placeholder="Поиск по названию, месту, учреждению">
-            <select id="categoryFilter"><option value="">Все типы мероприятий</option></select>
+        <div class="list-view active" id="listView">
+          <div class="filter-row afisha-filters">
+            <div class="filter-search"><input id="search" type="search" aria-label="Поиск мероприятий" placeholder="Поиск по названию, городу, месту, учреждению"><button class="button secondary small" id="clearFilters" type="button">Сбросить</button></div>
+            <select id="cityFilter" aria-label="Город"><option value="">Все города</option></select>
+            <select id="categoryFilter" aria-label="Тип мероприятия"><option value="">Все типы мероприятий</option></select>
+            <select id="institutionFilter" aria-label="Учреждение"><option value="">Все учреждения</option></select>
+            <select id="pushkinFilter" aria-label="Пушкинская карта"><option value="">Пушкинская карта: все</option><option value="yes">По Пушкинской карте</option><option value="no">Нет отметки о карте</option></select>
           </div>
           <div class="event-list" id="eventList"></div>
         </div>
       </section>
     </section>
+    <section class="places-section" id="places" aria-labelledby="placesTitle" hidden>
+      <div class="places-heading">
+        <div><p class="eyebrow">Культура рядом · ЛНР</p><h1 id="placesTitle">Места</h1><p>Учреждения культуры республики: адреса, фотографии и ссылки на первоисточники. Каталог пополняется; это не полный реестр учреждений ЛНР.</p></div>
+        <span class="places-count" id="placesCount" aria-live="polite"></span>
+      </div>
+      <div class="places-filters">
+        <input id="placesSearch" type="search" aria-label="Поиск мест" placeholder="Название, адрес или город">
+        <select id="placesCity" aria-label="Город места"><option value="">Все города</option></select>
+        <select id="placesType" aria-label="Тип места"><option value="">Все типы</option></select>
+      </div>
+      <div class="places-grid" id="placesGrid" aria-live="polite"><div class="empty">Загружаем места…</div></div>
+    </section>
   </main>
+
+  <dialog id="placeDialog" class="place-detail" aria-labelledby="placeDialogTitle">
+    <div class="modal-head"><h2 id="placeDialogTitle"></h2><button class="close" id="closePlace" type="button" aria-label="Закрыть профиль места">×</button></div>
+    <div class="modal-body" id="placeDialogBody"></div>
+  </dialog>
 
   <dialog id="eventDialog">
     <div class="modal-head"><h2 id="modalTitle"></h2><button class="close" id="closeDialog" type="button" aria-label="Закрыть">×</button></div>
@@ -529,12 +700,13 @@
     </div>
   </dialog>
 
-  <div class="auth-screen" id="authScreen">
+  <div class="auth-screen" id="authScreen" role="dialog" aria-modal="true" aria-label="Вход и регистрация" hidden>
     <div class="auth-card">
-      <div class="auth-art"><div class="brand-mark">К</div><h2>Культурный план</h2><p>Войдите в систему для работы с календарём мероприятий.</p></div>
+      <button class="auth-close" id="closeAuth" type="button" aria-label="Закрыть окно входа">×</button>
+      <div class="auth-art"><div class="brand-mark">К</div><h2>Культурный план</h2><p>Для добавления мероприятий войдите в учётную запись с правом редактирования.</p></div>
       <div class="auth-tabs"><button class="auth-tab active" id="showLogin" type="button">Вход</button><button class="auth-tab" id="showRegistration" type="button">Регистрация зрителя</button></div>
       <form class="auth-form" id="loginForm">
-        <div class="field"><label class="required" for="loginUsername">Логин, телефон или email</label><input id="loginUsername" autocomplete="username" required autofocus></div>
+        <div class="field"><label class="required" for="loginUsername">Логин, телефон или email</label><input id="loginUsername" autocomplete="username" required></div>
         <div class="field"><label class="required" for="loginPassword">Пароль</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
         <p class="auth-error" id="loginError"></p>
         <button class="button" type="submit">Войти</button>
@@ -560,11 +732,12 @@
       const STORAGE_KEY = 'culture-calendar-events-v1';
       const monthNames = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
       const shortMonths = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-      const fields = ['title', 'institution', 'date', 'time', 'place', 'direction', 'category', 'description', 'representative', 'contact', 'ticketUrl'];
+      const fields = ['title', 'institution', 'date', 'time', 'place', 'city', 'direction', 'category', 'description', 'representative', 'contact', 'ticketUrl'];
       const $ = (id) => document.getElementById(id);
       const form = $('eventForm');
       const dialog = $('eventDialog');
       let events = [];
+      let places = [];
       let activeDate = new Date();
       activeDate.setDate(1);
       let selectedId = null;
@@ -580,7 +753,7 @@
           });
           const result = await response.json();
           if (!response.ok) {
-            if (response.status === 401 && path !== '/api/auth/login') showLogin();
+            if (response.status === 401 && !path.startsWith('/api/auth/')) applyGuest();
             throw new Error(result.error || 'Ошибка сервера');
           }
           return result;
@@ -611,15 +784,41 @@
         render();
       }
 
-      function showLogin() {
+      function applyGuest() {
         currentUser = null;
+        $('authScreen').hidden = true;
+        $('userBadge').hidden = true;
+        $('logoutButton').hidden = true;
+        $('calendarFeedButton').hidden = true;
+        $('usersButton').hidden = true;
+        $('addButton').hidden = true;
+        $('navForm').hidden = true;
+        $('eventFormPanel').hidden = true;
+        $('exportButton').hidden = true;
+        $('eventStats').hidden = true;
+        $('navCalendar').hidden = true;
+        $('monthControl').hidden = true;
+        document.querySelector('[data-view="calendar"]').hidden = true;
+        showView('list');
+        $('loginButton').hidden = false;
+        $('registerButton').hidden = false;
+        document.querySelector('.workspace').classList.add('readonly');
+        $('serverStatus').textContent = 'Афиша открыта для всех';
+        $('serverStatus').className = 'server-status ready';
+      }
+
+      function openAuth(registration = false) {
+        showAuthMode(registration);
         $('authScreen').hidden = false;
         $('vkLoginButton').hidden = !vkConfigured;
+        $(registration ? 'registrationName' : 'loginUsername').focus();
       }
 
       function applyUser(user, smtpConfigured) {
         currentUser = user;
         $('authScreen').hidden = true;
+        $('loginButton').hidden = true;
+        $('registerButton').hidden = true;
         $('userBadge').hidden = false;
         $('userBadge').textContent = `${user.fullName} · ${user.roleName}`;
         $('logoutButton').hidden = false;
@@ -627,8 +826,15 @@
         $('usersButton').hidden = user.role !== 'admin';
         const canCreate = ['admin', 'user', 'curator'].includes(user.role);
         $('addButton').hidden = !canCreate;
+        $('navForm').hidden = !canCreate;
         $('eventFormPanel').hidden = !canCreate;
-        $('exportButton').hidden = user.role === 'viewer';
+        const canViewCalendar = ['admin', 'curator', 'leader'].includes(user.role);
+        $('eventStats').hidden = !canViewCalendar || location.hash === '#places';
+        $('exportButton').hidden = !canViewCalendar;
+        $('navCalendar').hidden = !canViewCalendar;
+        $('monthControl').hidden = !canViewCalendar;
+        document.querySelector('[data-view="calendar"]').hidden = !canViewCalendar;
+        if (!canViewCalendar) showView('list');
         document.querySelector('.workspace').classList.toggle('readonly', !canCreate);
         $('direction').disabled = user.role === 'curator';
         if (user.role === 'curator') $('direction').value = user.direction;
@@ -638,18 +844,21 @@
       }
 
       async function initialize() {
+        const placesLoading = loadPlaces();
+        showSection();
         try {
           const result = await apiRequest('/api/auth/me');
           vkConfigured = result.vkConfigured;
-          if (!result.user) { showLogin(); return; }
-          applyUser(result.user, result.smtpConfigured);
+          if (result.user) applyUser(result.user, result.smtpConfigured);
+          else applyGuest();
           await loadEvents();
         } catch (error) {
           $('serverStatus').textContent = 'Сервер недоступен';
           $('serverStatus').className = 'server-status error';
-          $('loginError').textContent = error.message;
-          showLogin();
+          applyGuest();
+          $('eventList').innerHTML = `<div class="empty"><strong>Не удалось загрузить афишу</strong>${escapeHtml(error.message)}</div>`;
         }
+        await placesLoading;
       }
 
       function toDateKey(year, month, day) {
@@ -659,6 +868,82 @@
       function escapeHtml(value = '') {
         return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
       }
+
+      function showSection() {
+        const isPlaces = location.hash === '#places';
+        $('places').hidden = !isPlaces;
+        document.querySelector('.hero').hidden = isPlaces;
+        document.querySelector('.workspace').hidden = isPlaces;
+        if (isPlaces) $('eventStats').hidden = true;
+        else $('eventStats').hidden = !['admin', 'curator', 'leader'].includes(currentUser?.role);
+        $('navPlaces').classList.toggle('active', isPlaces);
+        $('navEvents').classList.toggle('active', !isPlaces);
+        if (isPlaces) $('places').scrollIntoView();
+      }
+
+      function placeImage(place) {
+        return `<div class="place-photo"><img src="${escapeHtml(place.image)}" alt="Фото учреждения: ${escapeHtml(place.name)}" loading="lazy"><span class="place-photo-fallback" hidden>Фото недоступно · откройте первоисточник</span></div>`;
+      }
+
+      async function loadPlaces() {
+        try {
+          places = await apiRequest('/api/places');
+          for (const [id, label, values] of [
+            ['placesCity', 'Все города', places.map(place => place.city)],
+            ['placesType', 'Все типы', places.map(place => place.type)]
+          ]) {
+            $(id).innerHTML = `<option value="">${label}</option>` + [...new Set(values)].sort((a, b) => a.localeCompare(b, 'ru'))
+              .map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
+          }
+          renderPlaces();
+        } catch (error) {
+          $('placesGrid').innerHTML = `<div class="empty"><strong>Не удалось загрузить места</strong>${escapeHtml(error.message)}</div>`;
+        }
+      }
+
+      function renderPlaces() {
+        const query = $('placesSearch').value.trim().toLocaleLowerCase('ru');
+        const filtered = places.filter(place =>
+          (!query || `${place.name} ${place.city} ${place.address}`.toLocaleLowerCase('ru').includes(query)) &&
+          (!$('placesCity').value || place.city === $('placesCity').value) &&
+          (!$('placesType').value || place.type === $('placesType').value)
+        );
+        $('placesCount').textContent = `Показано ${filtered.length} из ${places.length}`;
+        $('placesGrid').innerHTML = filtered.length ? filtered.map(place => `<article class="place-card">
+          ${placeImage(place)}<div class="place-content"><span class="list-category">${escapeHtml(place.type)} · ${escapeHtml(place.city)}</span>
+          <h2>${escapeHtml(place.name)}</h2><p>${escapeHtml(place.description)}</p>
+          <p class="place-address">${escapeHtml(place.city)}, ${escapeHtml(place.address)}</p>
+          <button class="place-open" type="button" data-place-id="${escapeHtml(place.id)}" aria-label="Открыть профиль: ${escapeHtml(place.name)}">Подробнее →</button>
+          <small class="place-credit">Фото: <a href="${escapeHtml(place.source)}" target="_blank" rel="noopener noreferrer">${escapeHtml(place.photoCredit)}</a></small></div>
+        </article>`).join('') : '<div class="empty"><strong>Места не найдены</strong>Попробуйте изменить поиск или фильтры.</div>';
+      }
+
+      function openPlace(place) {
+        $('placeDialogTitle').textContent = place.name;
+        $('placeDialogBody').innerHTML = `${placeImage(place)}<p class="place-credit">Фото: ${escapeHtml(place.photoCredit)} · <a href="${escapeHtml(place.source)}" target="_blank" rel="noopener noreferrer">источник фотографии и сведений</a></p>
+          <p><strong>${escapeHtml(place.type)} · ${escapeHtml(place.city)}</strong></p><p>${escapeHtml(place.description)}</p>
+          <p><strong>Адрес:</strong> ${escapeHtml(place.city)}, ${escapeHtml(place.address)}</p>
+          <div class="place-links"><a href="${escapeHtml(place.website)}" target="_blank" rel="noopener noreferrer">${place.website === place.source ? 'Профиль учреждения' : 'Сайт или страница учреждения'} ↗</a>
+          ${place.website === place.source ? '' : `<a href="${escapeHtml(place.source)}" target="_blank" rel="noopener noreferrer">Официальный источник ↗</a>`}</div>`;
+        $('placeDialog').showModal();
+      }
+
+      for (const id of ['placesSearch', 'placesCity', 'placesType']) $(id).addEventListener(id === 'placesSearch' ? 'input' : 'change', renderPlaces);
+      $('placesGrid').addEventListener('click', event => {
+        const button = event.target.closest('[data-place-id]');
+        if (button) {
+          const place = places.find(item => item.id === button.dataset.placeId);
+          if (place) openPlace(place);
+        }
+      });
+      document.addEventListener('error', event => {
+        if (event.target.matches?.('.place-photo img')) {
+          event.target.hidden = true;
+          event.target.nextElementSibling.hidden = false;
+        }
+      }, true);
+      $('closePlace').addEventListener('click', () => $('placeDialog').close());
+      window.addEventListener('hashchange', showSection);
 
       function fileToDataUrl(file) {
         return new Promise((resolve, reject) => {
@@ -677,9 +962,29 @@
 
       function render() {
         renderCalendar();
+        renderFilters();
         renderList();
         renderStats();
-        renderCategoryFilter();
+      }
+
+      function eventCity(event) {
+        if (event.city?.trim()) return event.city.trim();
+        return event.place?.match(/(?:^|[,;]\s*)(?:г\.?\s*|город\s+)([^,;]+)/i)?.[1]?.trim() || '';
+      }
+
+      function renderFilters() {
+        const options = [
+          ['cityFilter', 'Все города', events.map(eventCity)],
+          ['categoryFilter', 'Все типы мероприятий', events.map((event) => event.category)],
+          ['institutionFilter', 'Все учреждения', events.map((event) => event.institution)]
+        ];
+        for (const [id, label, values] of options) {
+          const filter = $(id);
+          const current = filter.value;
+          const unique = [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
+          filter.innerHTML = `<option value="">${label}</option>` + unique.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
+          filter.value = unique.includes(current) ? current : '';
+        }
       }
 
       function renderCalendar() {
@@ -710,21 +1015,28 @@
       function renderList() {
         const query = $('search').value.trim().toLowerCase();
         const category = $('categoryFilter').value;
+        const city = $('cityFilter').value;
+        const institution = $('institutionFilter').value;
+        const pushkinCard = $('pushkinFilter').value;
         const sorted = [...events]
-          .filter((event) => !query || [event.title, event.institution, event.place, event.description].some((value) => value.toLowerCase().includes(query)))
+          .filter((event) => !query || [event.title, event.institution, event.place, event.description, eventCity(event)].some((value) => (value || '').toLowerCase().includes(query)))
+          .filter((event) => !city || eventCity(event) === city)
           .filter((event) => !category || event.category === category)
+          .filter((event) => !institution || event.institution === institution)
+          .filter((event) => !pushkinCard || Boolean(event.pushkinCard) === (pushkinCard === 'yes'))
           .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
 
         if (!sorted.length) {
-          $('eventList').innerHTML = '<div class="empty"><strong>Мероприятий не найдено</strong>Измените параметры поиска или добавьте новое событие.</div>';
+          $('eventList').innerHTML = '<div class="empty"><strong>Мероприятий не найдено</strong>Измените параметры поиска.</div>';
           return;
         }
 
         $('eventList').innerHTML = sorted.map((event) => {
           const date = new Date(`${event.date}T00:00:00`);
           return `<article class="list-card">
-            <div class="date-tile"><strong>${date.getDate()}</strong><span>${shortMonths[date.getMonth()]}</span></div>
-            <div class="list-info"><h3>${escapeHtml(event.title)}</h3><div class="list-meta">${escapeHtml(event.time)} · ${escapeHtml(event.place)} · ${escapeHtml(event.institution)}</div></div>
+            <div class="list-image${event.hasPoster || event.poster ? '' : ' no-poster'}">${event.hasPoster || event.poster ? `<img src="/api/events/${encodeURIComponent(event.id)}/poster" loading="lazy" alt="Афиша: ${escapeHtml(event.title)}">` : '<span aria-hidden="true">К</span>'}
+              <div class="date-tile"><strong>${date.getDate()}</strong><span>${shortMonths[date.getMonth()]}</span></div></div>
+            <div class="list-info"><span class="list-category">${escapeHtml(event.category || 'Событие')}</span><h3>${escapeHtml(event.title)}</h3><div class="list-meta">${escapeHtml(event.time)} · ${escapeHtml(event.place)}<br>${escapeHtml(event.institution)}</div>${event.pushkinCard ? '<span class="pushkin-badge">Пушкинская карта</span>' : ''}</div>
             <button class="button secondary small" type="button" data-event-id="${escapeHtml(event.id)}">Подробнее</button>
           </article>`;
         }).join('');
@@ -735,14 +1047,6 @@
         $('totalCount').textContent = events.length;
         $('monthCount').textContent = events.filter((event) => event.date.startsWith(currentMonth)).length;
         $('institutionCount').textContent = new Set(events.map((event) => event.institution.trim().toLowerCase())).size;
-      }
-
-      function renderCategoryFilter() {
-        const filter = $('categoryFilter');
-        const current = filter.value;
-        const categories = [...new Set(events.map((event) => event.category))].sort();
-        filter.innerHTML = '<option value="">Все типы мероприятий</option>' + categories.map((category) => `<option>${escapeHtml(category)}</option>`).join('');
-        filter.value = categories.includes(current) ? current : '';
       }
 
       function showEvent(id) {
@@ -757,16 +1061,18 @@
             <div class="detail"><span>Дата и время</span><strong>${escapeHtml(date)}, ${escapeHtml(event.time)}</strong></div>
             <div class="detail"><span>Тип</span><strong>${escapeHtml(event.category)}</strong></div>
             <div class="detail"><span>Место</span><strong>${escapeHtml(event.place)}</strong></div>
+            ${eventCity(event) ? `<div class="detail"><span>Город</span><strong>${escapeHtml(eventCity(event))}</strong></div>` : ''}
             <div class="detail"><span>Учреждение</span><strong>${escapeHtml(event.institution)}</strong></div>
+            ${event.pushkinCard ? '<div class="detail"><span>Пушкинская карта</span><strong>Доступно</strong></div>' : ''}
             <div class="detail"><span>Направление</span><strong>${escapeHtml(event.direction || 'Не указано')}</strong></div>
-            <div class="detail"><span>Автор</span><strong>${escapeHtml(event.ownerName || 'Не указан')}</strong></div>
+            ${currentUser ? `<div class="detail"><span>Автор</span><strong>${escapeHtml(event.ownerName || 'Не указан')}</strong></div>` : ''}
           </div>
           <p class="modal-description">${escapeHtml(event.description)}</p>
           ${event.ticketUrl ? `<a class="button ticket-link" href="${escapeHtml(event.ticketUrl)}" target="_blank" rel="noopener noreferrer">Купить билеты</a>` : ''}
-          <div class="details">
+          ${currentUser ? `<div class="details">
             <div class="detail"><span>Ответственный</span><strong>${escapeHtml(event.representative)}</strong></div>
             <div class="detail"><span>Контакт</span><strong>${escapeHtml(event.contact || 'Не указан')}</strong></div>
-          </div>`;
+          </div>` : ''}`;
         $('editEvent').hidden = !event.canEdit;
         $('deleteEvent').hidden = !event.canEdit;
         $('notifyEvent').hidden = !event.canNotify;
@@ -788,6 +1094,8 @@
           }
         }
         fields.forEach((field) => { $(field).value = event[field] ?? ''; });
+        $('city').value = eventCity(event);
+        $('pushkinCard').checked = event.pushkinCard === true;
         if (currentUser.role === 'curator') $('direction').value = currentUser.direction;
         $('poster').value = '';
         showPosterPreview(event.poster || '');
@@ -890,6 +1198,7 @@
         const id = $('eventId').value;
         const record = { id: id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())), createdAt: new Date().toISOString() };
         fields.forEach((field) => { record[field] = $(field).value.trim(); });
+        record.pushkinCard = $('pushkinCard').checked;
         const posterFile = $('poster').files[0];
         if (posterFile) {
           try {
@@ -934,7 +1243,14 @@
       $('prevMonth').addEventListener('click', () => { activeDate.setMonth(activeDate.getMonth() - 1); render(); });
       $('nextMonth').addEventListener('click', () => { activeDate.setMonth(activeDate.getMonth() + 1); render(); });
       $('search').addEventListener('input', renderList);
+      $('cityFilter').addEventListener('change', renderList);
       $('categoryFilter').addEventListener('change', renderList);
+      $('institutionFilter').addEventListener('change', renderList);
+      $('pushkinFilter').addEventListener('change', renderList);
+      $('clearFilters').addEventListener('click', () => {
+        for (const id of ['search', 'cityFilter', 'categoryFilter', 'institutionFilter', 'pushkinFilter']) $(id).value = '';
+        renderList();
+      });
       $('cancelEdit').addEventListener('click', resetForm);
       $('poster').addEventListener('change', async () => {
         const file = $('poster').files[0];
@@ -993,6 +1309,8 @@
       });
       $('addButton').addEventListener('click', () => {
         resetForm();
+        location.hash = '#eventFormPanel';
+        showSection();
         $('eventFormPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
         setTimeout(() => $('title').focus(), 350);
       });
@@ -1022,6 +1340,13 @@
       }
       $('showLogin').addEventListener('click', () => showAuthMode(false));
       $('showRegistration').addEventListener('click', () => showAuthMode(true));
+      $('loginButton').addEventListener('click', () => openAuth(false));
+      $('registerButton').addEventListener('click', () => openAuth(true));
+      $('closeAuth').addEventListener('click', () => { $('authScreen').hidden = true; });
+      $('authScreen').addEventListener('click', (event) => { if (event.target === $('authScreen')) $('authScreen').hidden = true; });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !$('authScreen').hidden) $('authScreen').hidden = true;
+      });
       $('registrationForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         $('registrationError').textContent = '';
@@ -1046,9 +1371,8 @@
       $('vkLoginButton').addEventListener('click', () => { window.location.href = '/api/auth/vk/start'; });
       $('logoutButton').addEventListener('click', async () => {
         try { await apiRequest('/api/auth/logout', { method: 'POST' }); } catch { /* Session is cleared locally by the server when available. */ }
-        events = [];
-        render();
-        showLogin();
+        applyGuest();
+        try { await loadEvents(); } catch (error) { notify(error.message); }
       });
       $('usersButton').addEventListener('click', async () => {
         resetUserForm();
@@ -1132,12 +1456,23 @@
         URL.revokeObjectURL(link.href);
         notify('Таблица Excel сформирована');
       });
-      document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach((item) => item.classList.toggle('active', item === tab));
-        const listActive = tab.dataset.view === 'list';
+      function showView(view) {
+        const listActive = view === 'list';
+        document.querySelectorAll('.tab').forEach((item) => item.classList.toggle('active', item.dataset.view === view));
         $('calendarView').classList.toggle('hidden', listActive);
         $('listView').classList.toggle('active', listActive);
+      }
+      document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => {
+        if (tab.dataset.view === 'calendar' && !['admin', 'curator', 'leader'].includes(currentUser?.role)) return;
+        showView(tab.dataset.view);
       }));
+      $('navCalendar').addEventListener('click', (event) => {
+        if (['admin', 'curator', 'leader'].includes(currentUser?.role)) showView('calendar');
+        else event.preventDefault();
+      });
+      $('navForm').addEventListener('click', (event) => {
+        if ($('eventFormPanel').hidden) { event.preventDefault(); $('events').scrollIntoView({ behavior: 'smooth' }); }
+      });
 
       setDefaultDate();
       render();
@@ -1146,7 +1481,7 @@
         $('loginError').textContent = vkError;
         history.replaceState(null, '', window.location.pathname);
       }
-      initialize();
+      initialize().then(() => { if (vkError) openAuth(false); });
     })();
   </script>
 </body>

@@ -9,6 +9,7 @@ import sqlite3
 import threading
 import time
 import uuid
+from contextlib import contextmanager, nullcontext
 from datetime import date, datetime, timedelta
 from email.message import EmailMessage
 from http import HTTPStatus
@@ -37,14 +38,28 @@ ROLE_NAMES = {
 REQUIRED_EVENT_FIELDS = (
     "title", "institution", "date", "time", "place", "description", "representative"
 )
-ALLOWED_EVENT_FIELDS = REQUIRED_EVENT_FIELDS + ("category", "contact", "poster", "direction", "ticketUrl")
+ALLOWED_EVENT_FIELDS = REQUIRED_EVENT_FIELDS + ("category", "contact", "poster", "direction", "ticketUrl", "city")
+DB_ERRORS = (ValueError, PermissionError, sqlite3.IntegrityError)
+if os.getenv("DATABASE_URL"):
+    from psycopg import IntegrityError as PostgresIntegrityError
+    DB_ERRORS += (PostgresIntegrityError,)
 
 
+@contextmanager
 def connect_db():
+    if os.getenv("DATABASE_URL"):
+        from postgres_db import Connection
+        with Connection(os.environ["DATABASE_URL"]) as connection:
+            yield connection
+        return
     connection = sqlite3.connect(DB_PATH, timeout=10)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
-    return connection
+    try:
+        with connection:
+            yield connection
+    finally:
+        connection.close()
 
 
 def hash_password(password, salt=None):
@@ -59,6 +74,31 @@ def verify_password(password, salt_hex, expected_hex):
 
 
 def init_db():
+    if os.getenv("DATABASE_URL"):
+        from postgres_db import SCHEMA
+        if not os.getenv("ADMIN_PASSWORD"):
+            raise RuntimeError("ADMIN_PASSWORD must be set before initializing the public database")
+        with connect_db() as connection:
+            connection.execute("SELECT pg_advisory_xact_lock(9431917)")
+            connection.executescript(SCHEMA)
+            admin_id = ensure_bootstrap_admin(connection)
+            seed_file = ROOT / "public-events-seed.json"
+            if seed_file.exists():
+                if not connection.execute("SELECT 1 FROM events LIMIT 1").fetchone():
+                    for public in json.loads(seed_file.read_text(encoding="utf-8")):
+                        poster = ROOT / "posters" / f"{public['id']}.jpg"
+                        data = {key: public.get(key, "") for key in ALLOWED_EVENT_FIELDS}
+                        data["representative"] = public.get("institution", "")
+                        data["pushkinCard"] = public.get("pushkinCard") is True
+                        if poster.exists():
+                            data["poster"] = "data:image/jpeg;base64," + base64.b64encode(poster.read_bytes()).decode("ascii")
+                        now = datetime.now().isoformat(timespec="seconds")
+                        connection.execute(
+                            "INSERT INTO events (id, data, owner_id, direction, created_at, updated_at) "
+                            "VALUES (?, ?, ?, '', ?, ?) ON CONFLICT (id) DO NOTHING",
+                            (public["id"], json.dumps(data, ensure_ascii=False), admin_id, now, now),
+                        )
+        return
     with connect_db() as connection:
         connection.executescript(
             """
@@ -144,8 +184,8 @@ def init_db():
                     )
 
 
-def ensure_bootstrap_admin():
-    with connect_db() as connection:
+def ensure_bootstrap_admin(existing_connection=None):
+    with nullcontext(existing_connection) if existing_connection is not None else connect_db() as connection:
         existing = connection.execute("SELECT id FROM users WHERE role = 'admin' LIMIT 1").fetchone()
         if existing:
             return existing["id"]
@@ -330,6 +370,12 @@ def user_from_token(token):
 
 def serialize_event(row, user, include_poster=True):
     event = json.loads(row["data"])
+    if user is None:
+        public_fields = ("title", "institution", "date", "time", "place", "city", "direction", "category", "description", "ticketUrl")
+        return {**{field: event.get(field, "") for field in public_fields},
+                "id": row["id"], "hasPoster": bool(event.get("poster")), "pushkinCard": event.get("pushkinCard") is True,
+                "canEdit": False, "canNotify": False}
+    event["pushkinCard"] = event.get("pushkinCard") is True
     if not include_poster:
         event["hasPoster"] = bool(event.get("poster"))
         event["poster"] = ""
@@ -397,6 +443,9 @@ def validate_event(payload, user):
         if not isinstance(value, str):
             raise ValueError(f"Некорректное поле: {field}")
         event[field] = value.strip()
+    if not isinstance(payload.get("pushkinCard", False), bool):
+        raise ValueError("Некорректная отметка Пушкинской карты")
+    event["pushkinCard"] = payload.get("pushkinCard", False)
     missing = [field for field in REQUIRED_EVENT_FIELDS if not event[field]]
     if missing:
         raise ValueError("Не заполнены обязательные поля: " + ", ".join(missing))
@@ -686,7 +735,7 @@ class CalendarHandler(SimpleHTTPRequestHandler):
     def handle_error(self, error):
         if isinstance(error, PermissionError):
             self.send_json({"error": str(error)}, HTTPStatus.FORBIDDEN)
-        elif isinstance(error, sqlite3.IntegrityError):
+        elif isinstance(error, DB_ERRORS[2:]):
             self.send_json({"error": "Логин уже используется или запись уже существует"}, HTTPStatus.CONFLICT)
         else:
             self.send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
@@ -727,6 +776,18 @@ class CalendarHandler(SimpleHTTPRequestHandler):
                 self.send_redirect("/?" + urlencode({"vk_error": str(error)})); return
         if path in ("/", "/index.html"):
             self.path = "/index.html"; super().do_GET(); return
+        if path == "/culture-plan-android-fixed.apk":
+            apk = ROOT / "dist" / "culture-plan-android-fixed.apk"
+            if not apk.is_file():
+                self.send_error(HTTPStatus.NOT_FOUND); return
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "application/vnd.android.package-archive")
+            self.send_header("Content-Disposition", 'attachment; filename="culture-plan-android-fixed.apk"')
+            self.send_header("Content-Length", str(apk.stat().st_size))
+            self.end_headers()
+            with apk.open("rb") as file:
+                self.wfile.write(file.read())
+            return
         if path.startswith("/calendar/") and path.endswith(".ics"):
             token = path.removeprefix("/calendar/").removesuffix(".ics")
             token_hash = hashlib.sha256(token.encode()).hexdigest()
@@ -741,18 +802,17 @@ class CalendarHandler(SimpleHTTPRequestHandler):
         if path == "/api/auth/me":
             user = self.current_user()
             self.send_json({"user": user, "smtpConfigured": smtp_configured(), "vkConfigured": vk_configured()}); return
-        user = self.require_user()
-        if not user:
-            return
         if path == "/api/events":
-            self.send_json(list_events(user)); return
+            self.send_json(list_events(self.current_user())); return
+        if path == "/api/places":
+            self.send_json(json.loads((ROOT / "places.json").read_text(encoding="utf-8"))); return
         if path.startswith("/api/events/") and path.endswith("/poster"):
             try:
                 event_id = path.removeprefix("/api/events/").removesuffix("/poster").strip("/")
                 content_type, content = get_event_poster(event_id)
                 self.send_response(HTTPStatus.OK)
                 self.send_header("Content-Type", content_type)
-                self.send_header("Cache-Control", "private, max-age=86400")
+                self.send_header("Cache-Control", "public, max-age=3600")
                 self.send_header("Content-Length", str(len(content)))
                 self.end_headers()
                 self.wfile.write(content)
@@ -760,7 +820,10 @@ class CalendarHandler(SimpleHTTPRequestHandler):
                 self.handle_error(error)
             return
         if path.startswith("/api/events/"):
-            self.send_json(get_event(path.removeprefix("/api/events/"), user)); return
+            self.send_json(get_event(path.removeprefix("/api/events/"), self.current_user())); return
+        user = self.require_user()
+        if not user:
+            return
         if path == "/api/notification-recipients":
             self.send_json(allowed_recipients(user)); return
         if path == "/api/calendar-feed":
@@ -848,7 +911,7 @@ class CalendarHandler(SimpleHTTPRequestHandler):
                     self.send_json({"error": "SMTP не настроен"}, HTTPStatus.SERVICE_UNAVAILABLE); return
                 self.send_json({"sent": check_notifications()}); return
             self.send_error(HTTPStatus.NOT_FOUND)
-        except (ValueError, PermissionError, sqlite3.IntegrityError) as error:
+        except DB_ERRORS as error:
             self.handle_error(error)
 
     def do_PUT(self):
@@ -881,7 +944,7 @@ class CalendarHandler(SimpleHTTPRequestHandler):
                         connection.execute("UPDATE users SET password_salt=?, password_hash=? WHERE id=?", (salt, password_hash, user_id))
                 self.send_json(get_user(user_id)); return
             self.send_error(HTTPStatus.NOT_FOUND)
-        except (ValueError, PermissionError, sqlite3.IntegrityError) as error:
+        except DB_ERRORS as error:
             self.handle_error(error)
 
     def do_DELETE(self):

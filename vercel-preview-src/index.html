@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Афиша учреждений культуры Луганской Народной Республики на октябрь 2026 года">
+  <title>Культурный план — октябрь 2026</title>
+  <style>
+    :root{font-family:Arial,sans-serif;color:#25312c;background:#f6f2e9}*{box-sizing:border-box}
+    body{margin:0}header{background:#184f43;color:#fff;padding:18px max(20px,calc((100vw - 1100px)/2))}
+    header strong{font-size:22px}main{max-width:1100px;margin:auto;padding:34px 20px 70px}
+    .eyebrow{color:#c35235;text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:700}
+    h1{font-family:Georgia,serif;font-size:clamp(34px,6vw,64px);font-weight:400;margin:12px 0 14px}
+    .notice{line-height:1.6;color:#5c675f;max-width:700px}a{color:#184f43}
+    .download{display:inline-block;margin:8px 0 4px;padding:13px 18px;border-radius:10px;background:#184f43;color:white;text-decoration:none;font-weight:700}
+    .download:hover,.download:focus-visible{background:#123c33}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:32px 0 18px}
+    .toolbar h2{font-family:Georgia,serif;font-size:26px;font-weight:400;margin:0}input{width:min(100%,350px);padding:12px;border:1px solid #d8d2c8;border-radius:10px;font:inherit}
+    .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-bottom:28px}
+    .weekday{text-align:center;font-weight:700;color:#68726a;padding:8px}.day{min-height:105px;background:#fff;border:1px solid #e5ded2;border-radius:8px;padding:8px;overflow:hidden}
+    .day strong{display:block;margin-bottom:8px;color:#184f43}.day.outside{background:#ede9e1;color:#a7aaa4}
+    .chip{display:block;width:100%;text-align:left;border:0;border-radius:5px;background:#dfe9e2;color:#25312c;padding:5px;margin:4px 0;font-size:12px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.card{background:#fff;border:1px solid #e5ded2;border-radius:16px;padding:17px;display:grid;gap:10px;align-content:start}
+    .card time{color:#b34f35;font-weight:700}.card h3{margin:0;font-size:19px}.card p{margin:0;color:#626e66;line-height:1.5}.card button{justify-self:start}
+    .button{background:#184f43;color:#fff;border:0;border-radius:9px;padding:10px 14px;cursor:pointer;font:inherit}
+    dialog{border:0;border-radius:16px;padding:0;width:min(600px,calc(100% - 28px));max-height:90vh;overflow:auto}dialog::backdrop{background:#162c25b0}
+    .dialog-head{background:#184f43;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:start;gap:10px}
+    .dialog-head h2{margin:0;font-family:Georgia,serif;font-weight:400}.dialog-head button{border:0;background:none;color:#fff;font-size:28px;cursor:pointer}
+    .detail{padding:20px;line-height:1.6}.detail img{display:block;width:auto;max-width:100%;max-height:450px;margin:0 auto 20px;border-radius:10px}.detail p{white-space:pre-wrap}
+    .empty{color:#68726a;padding:30px 0}@media(max-width:700px){.calendar{gap:2px}.day{min-height:52px;padding:3px}.day strong{font-size:12px;margin:2px}.chip{font-size:0;height:7px;padding:0}.weekday{font-size:12px}}
+  </style>
+</head>
+<body>
+  <header><strong>Культурный план</strong></header>
+  <main>
+    <p class="eyebrow">Афиша учреждений культуры</p>
+    <h1>Октябрь 2026</h1>
+    <p class="notice">Подтверждённые мероприятия ЛНР с официальными афишами. Это опубликованный снимок календаря: запись, вход и редактирование доступны только на основном сервере приложения.</p>
+    <a class="download" href="/culture-plan-android-fixed.apk" download="culture-plan-android-fixed.apk">Скачать приложение для Android (APK)</a>
+    <div class="toolbar"><h2 id="count">Загрузка мероприятий…</h2><input id="search" type="search" placeholder="Поиск по событиям и учреждениям" aria-label="Поиск мероприятий"></div>
+    <section class="calendar" id="calendar" aria-label="Календарь октября"></section>
+    <section class="cards" id="cards" aria-label="Мероприятия"></section>
+    <p class="empty" id="error" hidden>Не удалось загрузить календарь. Обновите страницу.</p>
+  </main>
+  <dialog id="dialog"><div class="dialog-head"><h2 id="dialog-title"></h2><button id="close" aria-label="Закрыть">×</button></div><div class="detail" id="detail"></div></dialog>
+  <script>
+    const calendar=document.getElementById('calendar'),cards=document.getElementById('cards'),dialog=document.getElementById('dialog'),detail=document.getElementById('detail');
+    let events=[];
+    const make=(tag,text)=>{const node=document.createElement(tag);node.textContent=text;return node};
+    function openEvent(event){
+      document.getElementById('dialog-title').textContent=event.title;
+      detail.replaceChildren();
+      if(event.poster){const img=document.createElement('img');img.src=event.poster;img.alt=`Афиша: ${event.title}`;detail.append(img)}
+      detail.append(make('strong',new Intl.DateTimeFormat('ru-RU',{dateStyle:'long'}).format(new Date(event.date+'T12:00:00'))+' · '+event.time));
+      for(const [label,value] of [['Учреждение',event.institution],['Место',event.place],['Тип',event.category],['Описание',event.description]]){
+        const p=make('p',`${label}: ${value}`);detail.append(p);
+      }
+      if(event.ticketUrl){const a=make('a','Билеты');a.href=event.ticketUrl;a.target='_blank';a.rel='noopener noreferrer';detail.append(a)}
+      dialog.showModal();
+    }
+    function render(){
+      const query=document.getElementById('search').value.trim().toLocaleLowerCase('ru');
+      const shown=events.filter(e=>`${e.title} ${e.institution} ${e.place}`.toLocaleLowerCase('ru').includes(query));
+      document.getElementById('count').textContent=`${shown.length} мероприятий`;
+      calendar.replaceChildren();cards.replaceChildren();
+      for(const name of ['Пн','Вт','Ср','Чт','Пт','Сб','Вс']){const label=make('span',name);label.className='weekday';calendar.append(label)}
+      const start=(new Date(2026,9,1).getDay()+6)%7;
+      for(let cell=0;cell<35;cell++){
+        const date=new Date(2026,9,cell-start+1),key=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        const box=document.createElement('div');box.className='day'+(date.getMonth()!==9?' outside':'');box.append(make('strong',date.getDate()));
+        for(const event of shown.filter(e=>e.date===key)){const chip=make('button',`${event.time} ${event.title}`);chip.type='button';chip.className='chip';chip.title=`${event.time} ${event.title}`;chip.onclick=()=>openEvent(event);box.append(chip)}
+        calendar.append(box);
+      }
+      for(const event of shown){
+        const card=document.createElement('article');card.className='card';card.append(make('time',`${event.date.slice(8)} октября · ${event.time}`),make('h3',event.title),make('p',event.institution));
+        const button=make('button','Подробнее');button.type='button';button.className='button';button.onclick=()=>openEvent(event);card.append(button);cards.append(card);
+      }
+      if(!shown.length){cards.append(make('p','Мероприятий не найдено.'))}
+    }
+    document.getElementById('close').onclick=()=>dialog.close();
+    dialog.onclick=e=>{if(e.target===dialog)dialog.close()};
+    document.getElementById('search').addEventListener('input',render);
+    fetch('/events.json').then(response=>{if(!response.ok)throw Error('Недоступно');return response.json()}).then(data=>{events=data;render()}).catch(()=>{document.getElementById('count').textContent='Календарь недоступен';document.getElementById('error').hidden=false});
+  </script>
+</body>
+</html>

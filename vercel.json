@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    {"src": "app.py", "use": "@vercel/python"},
+    {"src": "culture-plan-android-fixed.apk", "use": "@vercel/static"},
+    {"src": "culture-plan-full-page-qr.png", "use": "@vercel/static"}
+  ],
+  "routes": [
+    {"src": "/culture-plan-android-fixed.apk", "dest": "/culture-plan-android-fixed.apk"},
+    {"src": "/culture-plan-full-page-qr.png", "dest": "/culture-plan-full-page-qr.png"},
+    {"src": "/.*", "dest": "/app.py"}
+  ]
+}

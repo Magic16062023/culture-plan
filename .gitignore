@@ -13,3 +13,6 @@ __pycache__/
 *.jks
 *.keystore
 *.apk.idsig
+/.vercel/
+/vercel-preview/
+/vercel-app/
