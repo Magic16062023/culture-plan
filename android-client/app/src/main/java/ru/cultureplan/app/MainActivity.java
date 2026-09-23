@@ -77,6 +77,18 @@ public class MainActivity extends Activity {
         return view;
     }
 
+    private void applySystemBars(View root) {
+        int left = root.getPaddingLeft();
+        int top = root.getPaddingTop();
+        int right = root.getPaddingRight();
+        int bottom = root.getPaddingBottom();
+        root.setOnApplyWindowInsetsListener((view, insets) -> {
+            view.setPadding(left, top + insets.getSystemWindowInsetTop(), right,
+                    bottom + insets.getSystemWindowInsetBottom());
+            return insets;
+        });
+    }
+
     private void showServerSetup() {
         if (webView != null) {
             webView.destroy();
@@ -145,6 +157,7 @@ public class MainActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         hintParams.setMargins(0, dp(18), 0, 0);
         root.addView(hint, hintParams);
+        applySystemBars(root);
         setContentView(root);
     }
 
@@ -176,7 +189,7 @@ public class MainActivity extends Activity {
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(Color.WHITE);
+        root.setBackgroundColor(GREEN);
 
         LinearLayout toolbar = new LinearLayout(this);
         toolbar.setOrientation(LinearLayout.HORIZONTAL);
@@ -188,13 +201,6 @@ public class MainActivity extends Activity {
         title.setGravity(Gravity.CENTER_VERTICAL);
         title.setMaxLines(2);
         toolbar.addView(title, new LinearLayout.LayoutParams(0, dp(52), 1));
-
-        Button registrationButton = new Button(this);
-        registrationButton.setText("Регистрация");
-        registrationButton.setTextColor(Color.WHITE);
-        registrationButton.setBackgroundColor(Color.TRANSPARENT);
-        registrationButton.setOnClickListener(view -> openRegistration());
-        toolbar.addView(registrationButton, new LinearLayout.LayoutParams(dp(132), dp(48)));
 
         Button settingsButton = new Button(this);
         settingsButton.setText("Сервер");
@@ -231,24 +237,9 @@ public class MainActivity extends Activity {
         configureWebView(webView);
         root.addView(webView, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+        applySystemBars(root);
         setContentView(root);
         webView.loadUrl(serverUrl);
-    }
-
-    private void openRegistration() {
-        if (webView == null) {
-            return;
-        }
-        webView.evaluateJavascript("(function(){var button=document.getElementById('registerButton');"
-                + "if(!button)return 'unavailable';"
-                + "if(button.hidden)return 'signed-in';"
-                + "button.click();return 'opened';})()", result -> {
-            if ("\"signed-in\"".equals(result)) {
-                Toast.makeText(this, "Для регистрации другого пользователя сначала выйдите из аккаунта", Toast.LENGTH_LONG).show();
-            } else if (!"\"opened\"".equals(result)) {
-                Toast.makeText(this, "Регистрация доступна при подключении к основному серверу, а не к странице афиши", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")

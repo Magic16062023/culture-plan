@@ -49,8 +49,8 @@ def main():
         manifest = ElementTree.parse(APP / "src" / "main" / "AndroidManifest.xml")
         root = manifest.getroot()
         root.set("package", "ru.cultureplan.app")
-        root.set(f"{{{ANDROID_NS}}}versionCode", "2")
-        root.set(f"{{{ANDROID_NS}}}versionName", "1.1.0")
+        root.set(f"{{{ANDROID_NS}}}versionCode", "3")
+        root.set(f"{{{ANDROID_NS}}}versionName", "1.1.1")
         sdk = ElementTree.Element("uses-sdk", {
             f"{{{ANDROID_NS}}}minSdkVersion": "24",
             f"{{{ANDROID_NS}}}targetSdkVersion": "35",
