@@ -1,0 +1,15 @@
+calendar.db
+calendar.db-*
+*.db-shm
+*.db-wal
+__pycache__/
+*.py[cod]
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.apk.idsig
