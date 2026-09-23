@@ -531,7 +531,7 @@ def build_ics():
     now = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
     lines = [
         "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Culture Plan//RU",
-        "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:Культурный план",
+        "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:Культурный навигатор ЛНР",
         f"X-WR-TIMEZONE:{timezone}",
     ]
     with connect_db() as connection:
@@ -976,7 +976,7 @@ if __name__ == "__main__":
     init_db()
     threading.Thread(target=notification_worker, daemon=True).start()
     server = ThreadingHTTPServer((HOST, PORT), CalendarHandler)
-    print(f"Культурный план запущен: http://{HOST}:{PORT}")
+    print(f"Культурный навигатор ЛНР запущен: http://{HOST}:{PORT}")
     print("SMTP настроен." if smtp_configured() else "SMTP не настроен: email-уведомления отключены.")
     try:
         server.serve_forever()

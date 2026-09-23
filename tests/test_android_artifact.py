@@ -14,7 +14,7 @@ class AndroidArtifactTest(unittest.TestCase):
             self.assertIsNone(package.testzip())
             self.assertIn("META-INF/ANDROIDD.RSA", package.namelist())
             dex = package.read("classes.dex")
-        self.assertIn(b"https://vercel-preview-merqurys-5851.vercel.app", dex)
+        self.assertIn(b"https://kulturny-navigator-lnr.vercel.app", dex)
         self.assertNotIn(b"https://vercel-preview-nwwon7ypm-merqurys-5851.vercel.app", dex)
 
 

@@ -35,7 +35,7 @@ import java.util.Locale;
 public class MainActivity extends Activity {
     private static final String PREFS = "culture_plan";
     private static final String SERVER_URL = "server_url";
-    private static final String DEFAULT_SERVER = "https://vercel-preview-merqurys-5851.vercel.app";
+    private static final String DEFAULT_SERVER = "https://kulturny-navigator-lnr.vercel.app";
     private static final int FILE_CHOOSER_REQUEST = 10;
     private static final int GREEN = Color.rgb(24, 61, 50);
     private static final int CREAM = Color.rgb(247, 242, 232);
@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
         preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
         serverUrl = preferences.getString(SERVER_URL, "");
         if (serverUrl.isEmpty() || serverUrl.equals("http://10.0.2.2:8000")
+                || serverUrl.equals("https://vercel-preview-merqurys-5851.vercel.app")
                 || (serverUrl.startsWith("https://vercel-preview-")
                 && serverUrl.endsWith("-merqurys-5851.vercel.app"))) {
             serverUrl = DEFAULT_SERVER;
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
         mark.setBackgroundColor(GREEN);
         root.addView(mark, new LinearLayout.LayoutParams(dp(64), dp(64)));
 
-        TextView title = text("Культурный план", 26, GREEN);
+        TextView title = text("Культурный навигатор ЛНР", 26, GREEN);
         title.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -183,8 +184,9 @@ public class MainActivity extends Activity {
         toolbar.setPadding(dp(16), 0, dp(8), 0);
         toolbar.setBackgroundColor(GREEN);
 
-        TextView title = text("Культурный план", 19, Color.WHITE);
+        TextView title = text("Культурный навигатор ЛНР", 15, Color.WHITE);
         title.setGravity(Gravity.CENTER_VERTICAL);
+        title.setMaxLines(2);
         toolbar.addView(title, new LinearLayout.LayoutParams(0, dp(52), 1));
 
         Button registrationButton = new Button(this);

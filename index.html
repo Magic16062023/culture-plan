@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Календарь планируемых мероприятий учреждений культуры">
-  <title>Культурный план — календарь мероприятий</title>
+  <meta name="description" content="Культурный навигатор ЛНР: афиша мероприятий и каталог учреждений культуры">
+  <title>Культурный навигатор ЛНР — афиша и места</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Prata&display=swap');
 
@@ -357,7 +357,10 @@
     .shell { width: min(1320px, calc(100% - 64px)); }
     .site-header { background: white; border-bottom: 1px solid var(--line); }
     .topbar { min-height: 82px; padding: 14px 0; border: 0; }
-    .brand-mark { width: 46px; height: 46px; border-radius: 4px; background: var(--green); font-size: 29px; }
+    .brand-mark { width: 46px; height: 46px; flex-shrink: 0; border-radius: 4px; background: linear-gradient(to bottom, #64c8ff 0 33.333%, #0039a6 33.333% 66.666%, #f00000 66.666%); }
+    .brand-mark svg { width: 30px; height: 30px; filter: drop-shadow(0 1px 2px #1117); }
+    .site-header::after { display: block; height: 3px; background: linear-gradient(to right, #64c8ff 0 33.333%, #0039a6 33.333% 66.666%, #f00000 66.666%); content: ''; }
+    .auth-art .brand-mark { background: linear-gradient(to bottom, #64c8ff 0 33.333%, #0039a6 33.333% 66.666%, #f00000 66.666%); }
     .brand strong { font-family: Georgia, serif; font-size: 21px; font-weight: 700; letter-spacing: -.045em; }
     .brand span { margin-top: 3px; font-size: 11px; }
     .top-actions { align-items: center; flex-wrap: wrap; justify-content: flex-end; }
@@ -485,8 +488,8 @@
 <body>
   <header class="site-header"><div class="shell topbar">
     <div class="brand">
-      <div class="brand-mark">К</div>
-      <div><strong>Культурный план</strong><span>Единый календарь учреждений культуры</span></div>
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="white" stroke-width="2.5"/><path d="m32 16-5.5 10.5L16 32l5.5-10.5L32 16Z" fill="white"/><circle cx="24" cy="24" r="2" fill="#0039a6"/></svg></div>
+      <div><strong>Культурный навигатор ЛНР</strong><span>Афиша и места культуры республики</span></div>
     </div>
     <div class="top-actions">
       <span class="server-status" id="serverStatus">Загрузка афиши</span>
@@ -703,7 +706,7 @@
   <div class="auth-screen" id="authScreen" role="dialog" aria-modal="true" aria-label="Вход и регистрация" hidden>
     <div class="auth-card">
       <button class="auth-close" id="closeAuth" type="button" aria-label="Закрыть окно входа">×</button>
-      <div class="auth-art"><div class="brand-mark">К</div><h2>Культурный план</h2><p>Для добавления мероприятий войдите в учётную запись с правом редактирования.</p></div>
+      <div class="auth-art"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="white" stroke-width="2.5"/><path d="m32 16-5.5 10.5L16 32l5.5-10.5L32 16Z" fill="white"/><circle cx="24" cy="24" r="2" fill="#0039a6"/></svg></div><h2>Культурный навигатор ЛНР</h2><p>Для добавления мероприятий войдите в учётную запись с правом редактирования.</p></div>
       <div class="auth-tabs"><button class="auth-tab active" id="showLogin" type="button">Вход</button><button class="auth-tab" id="showRegistration" type="button">Регистрация зрителя</button></div>
       <form class="auth-form" id="loginForm">
         <div class="field"><label class="required" for="loginUsername">Логин, телефон или email</label><input id="loginUsername" autocomplete="username" required></div>
